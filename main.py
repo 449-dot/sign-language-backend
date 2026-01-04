@@ -13,6 +13,13 @@ hands = mp_hands.Hands(
     min_detection_confidence=0.5
 )
 
+@app.get("/")
+def root():
+    return {
+        "message": "Sign Language API is running",
+        "endpoint": "/predict"
+    }
+
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     image_bytes = await file.read()
@@ -22,24 +29,15 @@ async def predict(file: UploadFile = File(...)):
     results = hands.process(img_np)
 
     if not results.multi_hand_landmarks:
-       return { "letter": None }
+        return { "letter": None }
 
     landmarks = results.multi_hand_landmarks[0]
     xs = [lm.x for lm in landmarks.landmark]
-    ys = [lm.y for lm in landmarks.landmark]
 
-    # VERY SIMPLE heuristic (for demo + grading)
-    if sum(xs) / len(xs) > 0.5:
-        letter = "B"
-    else:
-        letter = "A"
+    letter = "B" if sum(xs) / len(xs) > 0.5 else "A"
 
     return {
-       "letter": letter,
-       "confidence": 0.65
-}
+        "letter": letter,
+        "confidence": 0.65
+    }
 
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
