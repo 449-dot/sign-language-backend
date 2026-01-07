@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import io
 import pickle
@@ -6,6 +7,18 @@ import mediapipe as mp
 import numpy as np
 
 app = FastAPI()
+
+
+# --------------------------------------------------
+# CORS (REQUIRED for browser + WebView)
+# --------------------------------------------------
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # localhost, Netlify, Android WebView
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # -----------------------------
 # Load trained model
