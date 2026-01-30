@@ -23,7 +23,7 @@ app.add_middleware(
 # -----------------------------
 # Load trained model
 # -----------------------------
-with open("model.p", "rb") as f:
+with open("model.pkl", "rb") as f:
     model_dict = pickle.load(f)
     model = model_dict["model"]
 
