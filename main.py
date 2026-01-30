@@ -25,7 +25,6 @@ app.add_middleware(
 # -----------------------------
 with open("model.pkl", "rb") as f:
     model_dict = pickle.load(f)
-    model = model_dict["model"]
 
 # -----------------------------
 # Labels dictionary (FULL)
